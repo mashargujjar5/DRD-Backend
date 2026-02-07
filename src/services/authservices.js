@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const GenerateToken = require('../utils/generateToken')
 
 const register = async (userData) => {
     try {
@@ -27,6 +28,29 @@ const register = async (userData) => {
         throw error;
     }
 };
+//login
+const login=async(userData)=>{
+    try{
+        const {email,password}=userData;
+        if(!email || !password){
+            throw new Error("All fields are required")
+        }
+        const user=await User.findOne({email});
+        if(!user){
+            throw new Error("user cannot found")
+        }
+        const isMatch=await bcrypt.compare(password,user.password);
+        if(!isMatch){
+            throw new Error("invalid credentials")
+        }
+        const token=GenerateToken(user._id);
+        return {user,token};    
+
+
+    } catch(error){
+        throw error;
+    }   
+}
 
 module.exports = {
     register
