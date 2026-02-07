@@ -29,29 +29,30 @@ const register = async (userData) => {
     }
 };
 //login
-const login=async(userData)=>{
-    try{
-        const {email,password}=userData;
-        if(!email || !password){
+const login = async (userData) => {
+    try {
+        const { email, password } = userData;
+        if (!email || !password) {
             throw new Error("All fields are required")
         }
-        const user=await User.findOne({email});
-        if(!user){
+        const user = await User.findOne({ email }).select('+password');
+        if (!user) {
             throw new Error("user cannot found")
         }
-        const isMatch=await bcrypt.compare(password,user.password);
-        if(!isMatch){
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
             throw new Error("invalid credentials")
         }
-        const token=GenerateToken(user._id);
-        return {user,token};    
+        const token = GenerateToken(user._id);
+        return { user, token };
 
 
-    } catch(error){
+    } catch (error) {
         throw error;
-    }   
+    }
 }
 
 module.exports = {
-    register
+    register,
+    login
 };
