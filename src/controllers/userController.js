@@ -2,14 +2,22 @@ const authservices = require('../services/authservices');
 
 const registeruser = async (req, res) => {
     try {
+        const { password, confirmPassword } = req.body;
+        if (password !== confirmPassword) {
+            return res.status(400).json({ success: false, message: "Passwords do not match" });
+        }
+
         const user = await authservices.register(req.body);
         res.status(201).json({
             success: true,
             message: "User registered successfully",
             user: {
                 id: user._id,
-                name: user.name,
-                email: user.email
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                phone: user.phone,
+                gender: user.gender
             }
         });
     }

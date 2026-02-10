@@ -4,8 +4,8 @@ const GenerateToken = require('../utils/generateToken')
 
 const register = async (userData) => {
     try {
-        const { name, email, password } = userData;
-        if (!name || !email || !password) {
+        const { firstname, lastname, email, phone, gender, password } = userData;
+        if (!firstname || !lastname || !email || !phone || !gender || !password) {
             throw new Error("All fields are required");
         }
 
@@ -18,12 +18,17 @@ const register = async (userData) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const user = await User.create({
-            name,
+            firstname,
+            lastname,
             email,
+            phone,
+            gender,
             password: hashedPassword
         });
 
         return user;
+
+
     } catch (error) {
         throw error;
     }

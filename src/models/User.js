@@ -1,9 +1,22 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: {
+    firstname: {
         type: String,
-        required: [true, 'Please add a name']
+        required: [true, 'Please add a firstname']
+    },
+    lastname: {
+        type: String,
+        required: [true, 'Please add a lastname']
+    },
+    phone: {
+        type: String,
+        required: [true, 'Please add a phone number']
+    },
+    gender: {
+        type: String,
+        required: [true, 'Please add a gender'],
+        enum: ['Male', 'Female', 'Other']
     },
     email: {
         type: String,
@@ -17,7 +30,7 @@ const userSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now   
+        default: Date.now
     }
 });
 
